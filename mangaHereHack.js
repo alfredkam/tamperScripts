@@ -16,7 +16,7 @@
 // @version        1.01
 //
 // Urls process this user script on
-// @include        wwww.idler-et.com/manga/*
+// @include        *.mangahere.com/manga/*
 //
 // Add any library dependencies here, so they are loaded before your script is loaded.
 //
@@ -27,49 +27,57 @@
 
 window.onload = function() {
 
-document.getElementById("title").innerHTML+='<button id="loadHack">LoadHack</button>';
+    document.getElementsByClassName("title")[0].innerHTML+='<button id="loadHack">LoadHack</button>';
 
-function loadHack(){
-	//page number
-	var x = document.getElementsByTagName("input")[0].parentNode.innerHTML.match(/当前：1\s\|\s共：(.*)\s\|\s上一页/)[1];
-	//get URL
-	var url = document.getElementById("discomic").getElementsByTagName("img")[0].src;
-	var arr = url.split(/\//);
-	var zeros = arr.pop();
-	url = arr.join("/");
-
-	url = url.replace(/zeros/,"");
-	zeros = zeros.split("");
-	var counter = 0;
-	for(var i=0;i < zeros.length; i++) {
-		if(zeros[i].toString() == "0")
-			counter+=1;
-		else
-			break;
-	}
-
-	var html = "";
+    function loadHack(){
+        //page number
+        var pageNumber = document.getElementsByClassName("wid60")[0].length;
+        
+        var url = document.getElementById("image").src;
 	
-	for(var i=1, len = parseInt(x); i <= len; i++) {
-		var z = counter;
-		if(i < 10)
-			z+=0;
-		else if(i < 100)
-			z-=1;
-		else if(i < 1000)
-			z-=2;
-		var img = url+"/";
-		for(var j=0;j<z;j++){
-			img+="0";
-		}
-		img+=""+i+".jpg";	
+        //one of the sample url http://c.mhcdn.net/store/manga/8471/002.0/compressed/h002.30.jpg
+        //another example of url http://c.mhcdn.net/store/manga/11752/001.0/compressed/o000.jpg
+        //another example http://c.mhcdn.net/store/manga/8553/034.0/compressed/l025a.jpg
+        
+        var arr = url.split(/\//);
+        var bug = arr.pop();
+	bug = bug.replace(/\.jpg/);
+	var defaultStr = arr.join("/")+"/";
 
-		html+="<a href='javascript:void(0);'><img id='DisComic' name='DisComic' border='0'src='"+img+"'/></a>";	
+	//check for condition  - h002.30
+	if(bug.split(/\./).length > 1) {
+		var temp = bug.split(/\./);
+		defaultStr += temp.shift()+".";
+		bug = temp.pop();
 	}
+	
+	//check for left/right condition	- l025a
+	var right = bug.match(/[0-9].*/)[0];
+	defaultStr+=bug.replace(right,"");
+	bug = right;
+	var num = bug.match(/[0-9]+/)[0]; 
+	right = bug.replace(num,"");
 
-	//$("#discomic").html(html);
-	document.getElementById("discomic").innerHTML = html;
-}
+	var str = "";
+	for(var i=0;i<pageNumber;i++) {
+		var pos = "";
+		var origin_len = num.toString().length;
+		pos = parseInt(num)+i;
+		var int_len = pos.toString().length;
+		for(var j=0;j<(origin_len-int_len);j++) {
+		    pos = "0"+pos;
+		}
+                        
+		if(right == "") {
+			str+="<img src='"+defaultStr+(pos)+".jpg'/>";
+		} else {
+			str+="<img src='"+defaultStr+(pos)+".jpg'/>";
+			str+="<img src='"+defaultStr+(pos)+"a.jpg'/>";
+			str+="<img src='"+defaultStr+(pos)+"b.jpg'/>";
+		}
+	}
+        document.getElementsByClassName("read_img")[0].innerHTML=str;
+    }
 
-document.getElementById("loadHack").onclick = loadHack;
+    document.getElementById("loadHack").onclick = loadHack;
 };
