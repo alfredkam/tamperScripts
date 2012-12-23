@@ -1,5 +1,5 @@
 userScripts
 ===========
 
-Scripts to tamper manga sites
+Scripts to tamper manga sites with the use of tampermonkey
 
