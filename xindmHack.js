@@ -3,25 +3,24 @@
 // @name           xindmHack 
 //
 // brief description
-// @description    loads all the images 
+// @description    loads all the images for xindm.cn
 //
-//URI (preferably your own site, so browser can avert naming collisions
-// @namespace      http://www.sarathonline.com/dyn/userscripts/hello/
 //
 // Your name, userscript userid link (optional)   
 // @author         arthur kam
 // If you want to license out
 //
 //Version Number
-// @version        0.11
+// @version        0.31
 //
 // Urls process this user script on
-// @include        *.xindm.cn/*
+// @match        http://*.xindm.cn/mh/*
+// @match 	http://xindm.cn/mh/*
 //
 // Add any library dependencies here, so they are loaded before your script is loaded.
 //
 // @require        https://ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js
-// @history        0.11 first version
+// @history        0.31 fixed the include to work better
 //
 // ==/UserScript==
 function loadjscssfile(filename, filetype){
@@ -49,7 +48,7 @@ loadjscssfile("//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js","js")
 }
 //window.akam=hackLoad
 //window.akam.hackLoad=hackLoad;
-$($('td')[0]).append('<button id="loadHack" onclick="hackLoad();">LoadHack</button>');
+$($('td')[0]).prepend('<button id="loadHack" onclick="hackLoad();">LoadHack</button>');
 var y="$('#loadHack').on('click',function(){hackLoad();})";
 var fileref=document.createElement('script');
 fileref.setAttribute("type","text/javascript");
