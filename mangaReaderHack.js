@@ -44,7 +44,7 @@ window.onload = function() {
 	defaultURL += bug.replace(num,"");
 
 	var str="";
-	for(var i=0;i<parseInt(pageNumber)+100;i++) {
+	for(var i=0;i<parseInt(pageNumber)*2;i+=2) {
 		str+="<img src='"+defaultURL+(parseInt(num)+i)+".jpg' />";
 	}
                             console.log(str);
