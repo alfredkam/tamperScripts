@@ -24,32 +24,31 @@
 // @history        0.11 first version
 //
 // ==/UserScript==
-
 window.onload = function() {
 
-    document.getElementsByClassName("c2")[0].innerHTML+='<button id="loadHack">LoadHack</button>';
+  document.getElementsByClassName("c2")[0].innerHTML += '<button id="loadHack">LoadHack</button>';
 
-    function loadHack(){
-        //page number
-        var pageNumber = document.getElementById("pageMenu").length;
-	var holder = document.getElementById("imgholder");
-        var url = document.getElementById("img").src;
-	//one of the example url http://i23.mangareader.net/historys-strongest-disciple-kenichi/1/historys-strongest-disciple-kenichi-551353.jpg
-        
-        var arr = url.split(/\//);
-        var bug = arr.pop().toString().replace(/\.jpg/,"");
-	var defaultURL = arr.join("/")+"/";
-	
-	var num = bug.match(/[0-9]+/)[0];
-	defaultURL += bug.replace(num,"");
+  function loadHack() {
+    //page number
+    var pageNumber = document.getElementById("pageMenu").length;
+    var holder = document.getElementById("imgholder");
+    var url = document.getElementById("img").src;
+    //one of the example url http://i23.mangareader.net/historys-strongest-disciple-kenichi/1/historys-strongest-disciple-kenichi-551353.jpg
+    var arr = url.split(/\//);
+    var bug = arr.pop().toString();
+    var defaultURL = arr.join("/") + "/";
 
-	var str="";
-	for(var i=0;i<parseInt(pageNumber)*2;i+=2) {
-		str+="<img src='"+defaultURL+(parseInt(num)+i)+".jpg' />";
-	}
-                            console.log(str);
-	holder.innerHTML = str;
+    var num = bug.match(/[0-9]+\.jpg/)[0];
+    num = num.replace("/\.jpg/","");
+    defaultURL += bug.replace(num, "");
+
+    var str = "";
+    for (var i = 0; i < parseInt(pageNumber)*2; i+=2) {
+      str += "<img src='" + defaultURL + (parseInt(num) + i) + ".jpg' /><br>";
     }
+    console.log(str);
+    holder.innerHTML = str;
+  }
 
-    document.getElementById("loadHack").onclick = loadHack;
+  document.getElementById("loadHack").onclick = loadHack;
 };
