@@ -41,10 +41,18 @@ function loadjscssfile(filename, filetype) {
 
 loadjscssfile("//ajax.googleapis.com/ajax/libs/jquery/1.8.0/jquery.min.js", "js");
 //appends button
-var x = function hackLoad(input,j) {
+var x = function hackLoad(input,j, ogUrl) {
     var picArray = input || ArrayPhoto;
     var j = j||0;
+    var urlPrependText="";
     console.log(j);
+    if(!ogUrl){
+     var ogUrl = $("#PicNow")[0].src;
+
+        if(ogUrl.indexOf("xindm")===-1){
+			urlPrependText =   "http://beiyong.bukamh.com";          
+        }
+    }
     if($("#holder #crawl"+i).length==0){
         $("#holder").append("<div id='crawl"+j+"'></div><br>");
     }
@@ -53,7 +61,7 @@ var x = function hackLoad(input,j) {
         //     $('#holder').append("<img src='" + picArray[i] + "'></img>");
         // }
         // else{
-        var url  = "http://beiyong.bukamh.com" + picArray[i];
+        var url  = urlPrependText + picArray[i];
         $("#holder #crawl"+j).append("<img src='" + url + "'></img>");
         //}
     }
@@ -79,6 +87,7 @@ var  crawlHack= function hackCrawl() {
             url: url,
             // async: true
         }).done(function(data) {
+            console.log(data);
             var res = regex.exec(data);
             var url = nextURLRegex.exec(data);
             // console.log(res[1]);
